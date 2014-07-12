@@ -10,10 +10,9 @@ $db=new \DB\SQL('mysql:host=localhost;port=3306;dbname=peeonatree','root','passw
 function validateUser($email, $pwd)
 {
     global $db;
-    $email = mysql_real_escape_string($email);
-    $sql = "SELECT * FROM users WHERE email=$email";
-    echo $sql;
-    $rows=$db->exec($sql);
+    //$sql = 'SELECT * FROM users WHERE email=?', $email;
+    //echo $sql;
+    $rows=$db->exec('SELECT * FROM users WHERE email=?', $email);
     foreach($rows as $row)
     {
         if($row['password'] == $pwd)
@@ -25,7 +24,7 @@ function validateUser($email, $pwd)
             return 0;
         }
     }
-    
+    return 0;
 }
 
 function userLoginRedirect()
