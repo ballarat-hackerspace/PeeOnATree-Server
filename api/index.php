@@ -251,6 +251,34 @@ $f3->route('GET /marks',
     }
 );
 
+//Retrieve a list of the latest 10 marks
+$f3->route('GET /marks/latest',
+    function() {
+        global $db, $f3;
+
+        $num = 10;
+        $sql = "SELECT TOP ($num) * FROM marks ORDER BY datetime DESC";
+
+        $rows=$db->exec($sql);
+        echo json_encode($rows);
+
+    }
+);
+
+//Retrieve a list of the latest @num marks
+$f3->route('GET /marks/latest/@num',
+    function() {
+        global $db, $f3;
+
+        $num = $f3->get('PARAMS.num');
+        $sql = "SELECT TOP ($num) * FROM marks ORDER BY datetime DESC";
+
+        $rows=$db->exec($sql);
+        echo json_encode($rows);
+
+    }
+);
+
 $f3->route('POST /user/logon',
     function()
     {
