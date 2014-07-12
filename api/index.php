@@ -258,7 +258,6 @@ $f3->route('GET /marks/latest',
 
         $num = 10;
         $sql = "SELECT * FROM marks ORDER BY datetime DESC LIMIT $num";
-        echo $sql;
 
         $rows=$db->exec($sql);
         echo json_encode($rows);
@@ -335,6 +334,30 @@ $f3->route('GET /user/status',
         }
     }
 );
+
+$f3->route('GET /user/marks',
+    function()
+    {
+        session_start();
+        global $db, $f3;
+        
+        //Validate user is logged on
+        if(!isset($_SESSION['email'])) { userLoginRedirect(); return; }
+        $uid = validateUser($_SESSION['email'], $_SESSION['pwd']);
+        if($uid == 0)
+        {
+            return;
+        }
+        else
+        {
+            $sql = "SELECT * FROM marks WHERE uid=$uid";
+
+            $rows=$db->exec($sql);
+            echo json_encode($rows);
+        }
+    }
+);
+
 
 $f3->route('GET /user/profile',
   function()
