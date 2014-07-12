@@ -358,6 +358,27 @@ $f3->route('GET /user/marks',
     }
 );
 
+$f3->route('GET /user/@uid/marks',
+    function()
+    {
+        session_start();
+        global $db, $f3;
+        
+        $uid = $f3->get('PARAMS.uid');
+        if($uid == 0)
+        {
+            return;
+        }
+        else
+        {
+            $sql = "SELECT * FROM marks WHERE uid=$uid";
+
+            $rows=$db->exec($sql);
+            echo json_encode($rows);
+        }
+    }
+);
+
 
 $f3->route('GET /user/profile',
   function()
