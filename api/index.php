@@ -63,7 +63,7 @@ $f3->route('GET /tree/history/@trid',
     function() {
 	    global $db, $f3;
 
-        $rows=$db->exec('SELECT * FROM checkins WHERE trid=?', $f3->get('PARAMS.trid'));
+        $rows=$db->exec('SELECT * FROM marks WHERE trid=?', $f3->get('PARAMS.trid'));
 	    echo json_encode($rows);
     }
 );
@@ -135,7 +135,7 @@ $f3->route('GET /trees/bylocation/@latlonran',
     }
 );
 
-$f3->route('GET /user/logon/@email',
+$f3->route('GET /user/logon',
     function()
     {
         session_start();
@@ -143,6 +143,15 @@ $f3->route('GET /user/logon/@email',
         $_SESSION['email'] = $f3->get('POST.email');
         $_SESSION['pwd'] = $f3->get('POST.password');
 
+    }
+);
+
+$f3->route('GET /user/logoff',
+    function()
+    {
+        session_start();
+        $_SESSION = array();
+        session_destroy();
     }
 );
 
