@@ -38,10 +38,32 @@ $f3->route('GET /',
 
 $f3->route('GET /tree/@trid',
     function() {
-	global $db, $f3;
+	    global $db, $f3;
 
         $rows=$db->exec('SELECT * FROM trees WHERE trid=?', $f3->get('PARAMS.trid'));
 	    echo json_encode($rows);
+
+    }
+);
+
+$f3->route('GET /tree/@trid/pic',
+    function() {
+	    global $db, $f3;
+
+        $rows=$db->exec('SELECT * FROM trees WHERE trid=?', $f3->get('PARAMS.trid'));
+        foreach($rows as $row)
+        {
+            switch(substr($row['pic'], -3)
+            {
+                case 'gif':
+                    header('Content-Type: image/gif');
+                case 'jpg':
+                    header('Content-Type: image/jpeg');
+                case 'png':
+                    header('Content-Type: image/png');
+            }
+            readfile('/PeeOnATree-Server/media/' . $row['pic']);
+        {
 
     }
 );
