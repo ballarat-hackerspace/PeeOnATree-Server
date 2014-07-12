@@ -67,7 +67,7 @@ $f3->route('GET /tree/@trid/pic',
                     header('Content-Type: image/png');
                     break;
             }
-            echo readfile('/PeeOnATree-Server/media/' . $row['pic']);
+            echo readfile('../media/' . $row['pic']);
         }
 
     }
