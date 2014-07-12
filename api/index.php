@@ -142,6 +142,7 @@ $f3->route('GET /trees',
 //latlonran should be in the form of: latitude,longitude,range (in km)
 $f3->route('GET /trees/bylocation/@latlonran',
     function() {
+        session_start();
         global $db, $f3;
         $R=6371; //Radius of the earth in km
 
