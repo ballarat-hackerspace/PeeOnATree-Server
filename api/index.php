@@ -1,7 +1,7 @@
 <?php
 
 $BASEURL = "http://54.79.38.93/";
-$CLIENTURL = $BASEUL."PeeOnATree-Client/web/";
+$CLIENTURL = $BASEURL."PeeOnATree-Client/web/";
 $APIURL = $BASEURL."PeeOnATree-Server/";
 
 $f3 = require('lib/base.php');
