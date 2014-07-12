@@ -169,6 +169,17 @@ $f3->route('GET /user/logon',
         global $db, $f3;
         $_SESSION['email'] = $f3->get('POST.email');
         $_SESSION['pwd'] = $f3->get('POST.password');
+        
+        $uid = validateuser($_SESSION['email'], $_SESSION['pwd']);
+        if($uid == 0)
+        {
+            echo "Could not logon";
+            return;
+        }
+        else
+        {
+            echo "Logged on successfully";
+        }
 
     }
 );
@@ -179,6 +190,26 @@ $f3->route('GET /user/logoff',
         session_start();
         $_SESSION = array();
         session_destroy();
+    }
+);
+
+$f3->route('GET /user/status',
+    function()
+    {
+        session_start();
+        global $db, $f3;
+        
+        //Validate user is logged on
+        if(!isset($_SESSION['email'])) { userLoginRedirect(); return; }
+        $uid = validateuser($_SESSION['email'], $_SESSION['pwd']);
+        if($uid == 0)
+        {
+            return;
+        }
+        else
+        {
+            echo $_SESSION['email'];
+        }
     }
 );
 
