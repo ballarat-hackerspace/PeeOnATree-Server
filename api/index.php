@@ -35,7 +35,7 @@ function userLoginRedirect()
     global $CLIENTURL;
     
     $loginPage = $CLIENTURL."login.html";
-    header( "Location: $loginPage" )
+    header( "Location: $loginPage" );
 }
 
 $f3->route('GET /',
@@ -215,12 +215,12 @@ $f3->route('POST /user/logon',
         $uid = validateuser($_SESSION['email'], $_SESSION['pwd']);
         if($uid == 0)
         {
-            echo "Could not logon";
+            echo json_encode(False);
             return;
         }
         else
         {
-            echo "Logged on successfully";
+            echo json_encode(True);
         }
 
     }
