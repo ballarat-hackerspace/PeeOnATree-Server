@@ -163,7 +163,8 @@ $f3->route('POST /tree/@trid/uploadpic',
                           ["size"] =>     int(172245)
                         }
                     */
-                    // $file['name'] already contains the slugged name now
+                    echo $file['name'] already contains the slugged name now
+                    echo $file['tmp_name'] already contains the slugged name now
 
                     // maybe you want to check the file size
                     if($file['size'] > (8 * 1024 * 1024)) // if bigger than 8 MB
@@ -184,7 +185,7 @@ $f3->route('POST /tree/@trid/uploadpic',
         //        WHERE trid=$trid";
 
         //$rows=$db->exec($sql);
-        echo $files;
+        //echo $files;
 
     }
 );
