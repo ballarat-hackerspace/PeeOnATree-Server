@@ -47,7 +47,8 @@ $f3->route('GET /tree/@trid',
 );
 
 $f3->route('GET /tree/@trid/pic',
-    function() {
+    function() 
+    {
 	    global $db, $f3;
 
         $rows=$db->exec('SELECT * FROM trees WHERE trid=?', $f3->get('PARAMS.trid'));
@@ -57,13 +58,16 @@ $f3->route('GET /tree/@trid/pic',
             {
                 case 'gif':
                     header('Content-Type: image/gif');
+                    break;
                 case 'jpg':
                     header('Content-Type: image/jpeg');
+                    break;
                 case 'png':
                     header('Content-Type: image/png');
+                    break;
             }
             readfile('/PeeOnATree-Server/media/' . $row['pic']);
-        {
+        }
 
     }
 );
