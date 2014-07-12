@@ -9,14 +9,17 @@ $db=new \DB\SQL('mysql:host=localhost;port=3306;dbname=peeonatree','root','passw
 
 function validateUser($email, $pwd)
 {
-    //$rows=$db->exec('SELECT * FROM users WHERE email=?', $email);
-    //if $rows[0]['password'] == $pwd
+    $rows=$db->exec('SELECT * FROM users WHERE email=?', $email);
+    foreach($rows as $row)
     {
-    //    return $rows[0]['id'];
-    }
-    //else
-    {
-    //    return 0;
+        if $row['password'] == $pwd
+        {
+            return $row['id'];
+        }
+        else
+        {
+            return 0;
+        }
     }
     
 }
