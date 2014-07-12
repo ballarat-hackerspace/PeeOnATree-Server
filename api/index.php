@@ -4,7 +4,7 @@
 $f3 = require('lib/base.php');
 //$f3 = include('lib/db/sql.php');
 
-$db=new \DB\SQL('mysql:host=localhost;port=3306;dbname=peeonatree','root','passw0rd');
+$db=new \DB\SQL('mysql:host=54.79.38.93;port=3306;dbname=peeonatree','root','passw0rd');
 
 $f3->route('GET /',
     function() {
@@ -25,12 +25,43 @@ $f3->route('GET /tree/@trid',
     }
 );
 
+$f3->route('GET /tree/edit/@trid',
+    function()
+    {
+        global $db, $f3;
+        $name = $f3->get('POST.name');
+
+        $rows=$db->exec('SELECT * FROM trees WHERE trid=?', $f3->get('PARAMS.trid'));
+        echo count($rows);
+        foreach($rows as $row)
+            echo $row['trid'];
+
+    }
+);
+
+
 $f3->route('GET /tree/history/@trid',
     function() {
 	    global $db, $f3;
 
         $rows=$db->exec('SELECT * FROM checkins WHERE trid=?', $f3->get('PARAMS.trid'));
 	    echo json_encode($rows);
+    }
+);
+
+//Retrieve a list of all trees
+$f3->route('GET /trees',
+    function() {
+        global $db, $f3;
+
+        list($lat, $lon, $rad) = explode(",",$f3->get('PARAMS.latlonran'));
+
+        $sql = "Select *
+                From trees";
+
+        $rows=$db->exec($sql);
+        echo json_encode($rows);
+
     }
 );
 
@@ -53,8 +84,7 @@ $f3->route('GET /trees/bylocation/@latlonran',
         $sql = "Select *
                 From trees
                 Where latitude Between $minLat And $maxLat
-          And longitude Between $minLon And $maxLon";
-        echo $sql;
+                And longitude Between $minLon And $maxLon";
 
         $rows=$db->exec($sql);
         echo json_encode($rows);
