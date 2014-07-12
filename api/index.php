@@ -32,10 +32,9 @@ function validateUser($email, $pwd)
 
 function userLoginRedirect()
 {
-    global $CLIENTURL;
+    global $f3;
     
-    $loginPage = $CLIENTURL."login.html";
-    header( "Location: $loginPage" );
+    $f3->error(403);
 }
 
 $f3->route('GET /',
