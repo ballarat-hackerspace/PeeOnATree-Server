@@ -13,11 +13,11 @@ $f3->route('GET /',
     }
 );
 
-$f3->route('GET /tree/@count',
+$f3->route('GET /tree/@trid',
     function() {
 	global $db, $f3;
 
-        $rows=$db->exec('SELECT * FROM trees WHERE trid=?', $f3->get('PARAMS.count'));
+        $rows=$db->exec('SELECT * FROM trees WHERE trid=?', $f3->get('PARAMS.trid'));
 	echo count($rows);
 	foreach($rows as $row)
   		echo $row['trid'];
@@ -25,31 +25,39 @@ $f3->route('GET /tree/@count',
     }
 );
 
+$f3->route('GET /tree/history/@trid',
+    function() {
+	    global $db, $f3;
+
+        $rows=$db->exec('SELECT * FROM checkins WHERE trid=?', $f3->get('PARAMS.trid'));
+	    echo json_encode($rows);
+    }
+);
+
 //Retrieve a list of trees withing range of a lat/lon
-//latlonran should be in the form of: latitude,longitude,range
+//latlonran should be in the form of: latitude,longitude,range (in km)
 $f3->route('GET /trees/bylocation/@latlonran',
     function() {
         global $db, $f3;
-	$R=6371; //Radius of the earth in km
+        $R=6371; //Radius of the earth in km
 
-	list($lat, $lon, $rad) = explode(",",$f3->get('PARAMS.latlonran'));
+        list($lat, $lon, $rad) = explode(",",$f3->get('PARAMS.latlonran'));
 
-	// first-cut bounding box (in degrees)
-	$maxLat = $lat + rad2deg($rad/$R);
-	$minLat = $lat - rad2deg($rad/$R);
-	// compensate for degrees longitude getting smaller with increasing latitude
-	$maxLon = $lon + rad2deg($rad/$R/cos(deg2rad($lat)));
-	$minLon = $lon - rad2deg($rad/$R/cos(deg2rad($lat)));
+        // first-cut bounding box (in degrees)
+        $maxLat = $lat + rad2deg($rad/$R);
+        $minLat = $lat - rad2deg($rad/$R);
+        // compensate for degrees longitude getting smaller with increasing latitude
+        $maxLon = $lon + rad2deg($rad/$R/cos(deg2rad($lat)));
+        $minLon = $lon - rad2deg($rad/$R/cos(deg2rad($lat)));
 
-	$sql = "Select *
-        	From trees
-        	Where Lat Between $minLat And $maxLat
-          And Lon Between $minLon And $maxLon";
-	echo $sql;
+        $sql = "Select *
+                From trees
+                Where latitude Between $minLat And $maxLat
+          And longitude Between $minLon And $maxLon";
+        echo $sql;
 
         $rows=$db->exec($sql);
-        echo count($rows);
-	echo json_encode($rows); 
+        echo json_encode($rows);
 
     }
 );
