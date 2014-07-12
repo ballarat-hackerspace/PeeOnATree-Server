@@ -10,6 +10,7 @@ $db=new \DB\SQL('mysql:host=localhost;port=3306;dbname=peeonatree','root','passw
 function validateUser($email, $pwd)
 {
     global $db;
+    $email = mysql_real_escape_string($email);
     $sql = "SELECT * FROM users WHERE email=$email";
     echo $sql;
     $rows=$db->exec($sql);
@@ -171,6 +172,7 @@ $f3->route('POST /user/logon',
         session_start();
         global $db, $f3;
         $_SESSION['email'] = $f3->get('POST.email');
+        echo $f3->get('POST.email');
         $_SESSION['pwd'] = $f3->get('POST.password');
         
         $uid = validateuser($_SESSION['email'], $_SESSION['pwd']);
