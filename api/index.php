@@ -154,10 +154,11 @@ $f3->route('GET /trees/bylocation/@latlonran',
         $maxLon = $lon + rad2deg($rad/$R/cos(deg2rad($lat)));
         $minLon = $lon - rad2deg($rad/$R/cos(deg2rad($lat)));
 
-        $sql = "Select *
-                From trees
-                Where latitude Between $minLat And $maxLat
-                And longitude Between $minLon And $maxLon";
+        $sql = "Select Distinct t.trid, t.latitude, t.longitude, m.datetime
+                From trees t
+                Left Join marks m ON m.trid = t.trid AND ( (m.datetime = (SELECT max(datetime) FROM marks where uid = $uid AND trid = t.trid)) OR (m.datetime is null) )
+                Where t.latitude Between $minLat And $maxLat
+                And t.longitude Between $minLon And $maxLon";
 
         $rows=$db->exec($sql);
         echo json_encode($rows);
