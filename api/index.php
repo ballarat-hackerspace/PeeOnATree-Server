@@ -163,8 +163,8 @@ $f3->route('POST /tree/@trid/uploadpic',
                           ["size"] =>     int(172245)
                         }
                     */
-                    echo $file['name']; //already contains the slugged name now
-                    echo $file['tmp_name']; //already contains the slugged name now
+                    //echo $file['name']; //already contains the slugged name now
+                    //echo $file['tmp_name']; //already contains the slugged name now
 
                     // maybe you want to check the file size
                     if($file['size'] > (8 * 1024 * 1024)) // if bigger than 8 MB
@@ -176,10 +176,10 @@ $f3->route('POST /tree/@trid/uploadpic',
                 $overwrite,
                 $slug
         );
-        var_dump($files);
+        //var_dump($files);
         
         
-        
+        //echo $files[0];
         //$sql = "UPDATE trees 
         //        SET pic =  $files[0]
         //        WHERE trid=$trid";
@@ -230,6 +230,20 @@ $f3->route('GET /trees/bylocation/@latlonran',
                 Left Join marks m ON m.trid = t.trid AND ( (m.datetime = (SELECT max(datetime) FROM marks where uid = $uid AND trid = t.trid)) OR (m.datetime is null) )
                 Where t.latitude Between $minLat And $maxLat
                 And t.longitude Between $minLon And $maxLon";
+
+        $rows=$db->exec($sql);
+        echo json_encode($rows);
+
+    }
+);
+
+//Retrieve a list of all trees
+$f3->route('GET /marks',
+    function() {
+        global $db, $f3;
+
+        $sql = "Select *
+                From marks";
 
         $rows=$db->exec($sql);
         echo json_encode($rows);
