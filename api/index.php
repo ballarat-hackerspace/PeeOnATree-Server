@@ -145,6 +145,10 @@ $f3->route('GET /trees/bylocation/@latlonran',
         global $db, $f3;
         $R=6371; //Radius of the earth in km
 
+        //Validate user is logged on
+        if(!isset($_SESSION['email'])) { userLoginRedirect(); return; }
+        $uid = validateuser($_SESSION['email'], $_SESSION['pwd']);
+
         list($lat, $lon, $rad) = explode(",",$f3->get('PARAMS.latlonran'));
 
         // first-cut bounding box (in degrees)
@@ -225,9 +229,8 @@ $f3->route('GET /user/profile',
     global $db, $f3;
 
     //Validate user is logged on
-    //        if(!isset($_SESSION['email'])) { userLoginRedirect(); return; }
-    //        $uid = validateuser($_SESSION['email'], $_SESSION['pwd']);
-    $uid = 1;
+    if(!isset($_SESSION['email'])) { userLoginRedirect(); return; }
+    $uid = validateuser($_SESSION['email'], $_SESSION['pwd']);
     if($uid == 0)
     {
       return;
