@@ -54,6 +54,7 @@ $f3->route('GET /tree/@trid/pic',
         $rows=$db->exec('SELECT * FROM trees WHERE trid=?', $f3->get('PARAMS.trid'));
         foreach($rows as $row)
         {
+            if(substr($row['pic'] == "") {return;}
             switch(substr($row['pic'], -3))
             {
                 case 'gif':
@@ -66,7 +67,7 @@ $f3->route('GET /tree/@trid/pic',
                     header('Content-Type: image/png');
                     break;
             }
-            readfile('/PeeOnATree-Server/media/' . $row['pic']);
+            echo readfile('/PeeOnATree-Server/media/' . $row['pic']);
         }
 
     }
