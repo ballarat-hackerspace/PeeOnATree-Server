@@ -53,7 +53,7 @@ $f3->route('GET /tree/@trid/pic',
         $rows=$db->exec('SELECT * FROM trees WHERE trid=?', $f3->get('PARAMS.trid'));
         foreach($rows as $row)
         {
-            switch(substr($row['pic'], -3)
+            switch(substr($row['pic'], -3))
             {
                 case 'gif':
                     header('Content-Type: image/gif');
@@ -81,7 +81,7 @@ $f3->route('GET /tree/edit/@trid',
 );
 
 
-$f3->route('GET /tree/history/@trid',
+$f3->route('GET /tree/@trid/history',
     function() {
 	    global $db, $f3;
 
