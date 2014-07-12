@@ -228,9 +228,13 @@ $f3->route('POST /user/logon',
 $f3->route('GET /user/logoff',
     function()
     {
+        global $f3;
+        
         session_start();
         $_SESSION = array();
         session_destroy();
+        
+        $f3->error(200);
     }
 );
 
