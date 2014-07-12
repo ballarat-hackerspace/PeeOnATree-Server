@@ -19,9 +19,7 @@ $f3->route('GET /tree/@trid',
 	global $db, $f3;
 
         $rows=$db->exec('SELECT * FROM trees WHERE trid=?', $f3->get('PARAMS.trid'));
-	echo count($rows);
-	foreach($rows as $row)
-  		echo $row['trid'];
+	    echo json_encode($rows);
 
     }
 );
@@ -33,9 +31,7 @@ $f3->route('GET /tree/edit/@trid',
         $name = $f3->get('POST.name');
 
         $rows=$db->exec('SELECT * FROM trees WHERE trid=?', $f3->get('PARAMS.trid'));
-        echo count($rows);
-        foreach($rows as $row)
-            echo $row['trid'];
+        echo json_encode($rows);
 
     }
 );
@@ -50,12 +46,24 @@ $f3->route('GET /tree/history/@trid',
     }
 );
 
+//Checkin to a tree ('mark')
+$f3->route('GET /tree/@trid/mark/@uid',
+    function() {
+        global $db, $f3;
+
+        $sql = ("INSERT INTO marks(uid, trid)
+                VALUES (?,?)", $f3->get('PARAMS.trid'), $f3->get('PARAMS.uid'));
+
+        $rows=$db->exec($sql);
+        echo json_encode($rows);
+
+    }
+);
+
 //Retrieve a list of all trees
 $f3->route('GET /trees',
     function() {
         global $db, $f3;
-
-        list($lat, $lon, $rad) = explode(",",$f3->get('PARAMS.latlonran'));
 
         $sql = "Select *
                 From trees";
@@ -92,5 +100,6 @@ $f3->route('GET /trees/bylocation/@latlonran',
 
     }
 );
+
 
 $f3->run();
