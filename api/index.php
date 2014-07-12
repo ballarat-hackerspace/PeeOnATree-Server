@@ -246,7 +246,7 @@ $f3->route('POST /user/logon',
         //echo $f3->get('POST.email');
         $_SESSION['pwd'] = $f3->get('POST.password');
         
-        $uid = validateuser($_SESSION['email'], $_SESSION['pwd']);
+        $uid = validateUser($_SESSION['email'], $_SESSION['pwd']);
         if($uid == 0)
         {
             echo json_encode(False);
@@ -281,7 +281,7 @@ $f3->route('GET /user/status',
         
         //Validate user is logged on
         if(!isset($_SESSION['email'])) { userLoginRedirect(); return; }
-        $uid = validateuser($_SESSION['email'], $_SESSION['pwd']);
+        $uid = validateUser($_SESSION['email'], $_SESSION['pwd']);
         if($uid == 0)
         {
             return;
@@ -301,7 +301,7 @@ $f3->route('GET /user/profile',
 
     //Validate user is logged on
     if(!isset($_SESSION['email'])) { userLoginRedirect(); return; }
-    $uid = validateuser($_SESSION['email'], $_SESSION['pwd']);
+    $uid = validateUser($_SESSION['email'], $_SESSION['pwd']);
     if($uid == 0)
     {
       return;
