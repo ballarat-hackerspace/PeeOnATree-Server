@@ -257,7 +257,7 @@ $f3->route('GET /marks/latest',
         global $db, $f3;
 
         $num = 10;
-        $sql = "SELECT TOP($num) * FROM marks ORDER BY datetime DESC";
+        $sql = "SELECT * FROM marks ORDER BY datetime DESC LIMIT $num";
         echo $sql;
 
         $rows=$db->exec($sql);
@@ -272,7 +272,7 @@ $f3->route('GET /marks/latest/@num',
         global $db, $f3;
 
         $num = $f3->get('PARAMS.num');
-        $sql = "SELECT TOP ($num) * FROM marks ORDER BY datetime DESC";
+        $sql = "SELECT * FROM marks ORDER BY datetime DESC LIMIT $num";
 
         $rows=$db->exec($sql);
         echo json_encode($rows);
