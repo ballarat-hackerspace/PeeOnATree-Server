@@ -151,7 +151,7 @@ $f3->route('POST /tree/@trid/uploadpic',
         }
 
         $trid = $f3->get('PARAMS.trid');
-        $files = $web->receive(function($file,$formFieldName)
+        $files = $web->receive(function($file)
                 {
                     var_dump($file);
                     /* looks like:
