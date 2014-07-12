@@ -133,8 +133,13 @@ $f3->route('GET /tree/@trid/mark',
 $f3->route('POST /tree/@trid/uploadpic',
     function() 
     {
+        $web = \Web::instance();
         session_start();
         global $db, $f3;
+        
+        $f3->set('UPLOADS','../media/');
+        $overwrite = false; // set to true, to overwrite an existing file; Default: false
+        $slug = true; // rename file to filesystem-friendly version
         
         //Validate user is logged on
         if(!isset($_SESSION['email'])) { userLoginRedirect(); return; }
@@ -146,11 +151,40 @@ $f3->route('POST /tree/@trid/uploadpic',
         }
 
         $trid = $f3->get('PARAMS.trid');
-        $sql = "INSERT INTO marks(uid, trid)
-                VALUES ($uid,$trid)";
+        $files = $web->receive(function($file,$formFieldName)
+                {
+                    var_dump($file);
+                    /* looks like:
+                      array(5) {
+                          ["name"] =>     string(19) "csshat_quittung.png"
+                          ["type"] =>     string(9) "image/png"
+                          ["tmp_name"] => string(14) "/tmp/php2YS85Q"
+                          ["error"] =>    int(0)
+                          ["size"] =>     int(172245)
+                        }
+                    */
+                    // $file['name'] already contains the slugged name now
 
-        $rows=$db->exec($sql);
-        echo json_encode($rows);
+                    // maybe you want to check the file size
+                    if($file['size'] > (8 * 1024 * 1024)) // if bigger than 8 MB
+                        return false; // this file is not valid, return false will skip moving it
+
+                    // everything went fine, hurray!
+                    return true; // allows the file to be moved from php tmp dir to your defined upload dir
+                },
+                $overwrite,
+                $slug
+        );
+        var_dump($files);
+        
+        
+        
+        $sql = "UPDATE trees 
+                SET pic =  $files[0]
+                WHERE trid=$trid";
+
+        //$rows=$db->exec($sql);
+        echo $files;
 
     }
 );
