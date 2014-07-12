@@ -7,6 +7,19 @@ $f3 = require('lib/base.php');
 //$db=new \DB\SQL('mysql:host=54.79.38.93;port=3306;dbname=peeonatree','root','passw0rd');
 $db=new \DB\SQL('mysql:host=localhost;port=3306;dbname=peeonatree','root','passw0rd');
 
+function validateUser($email, $pwd)
+{
+    $rows=$db->exec('SELECT * FROM users WHERE email=?', $email);
+    if $rows[0]['password'] == $pwd
+    {
+        return $rows[0]['id'];
+    }
+    else
+    {
+        return 0;
+    }
+}
+
 $f3->route('GET /',
     function() {
         echo 'Hello, world!';
@@ -47,12 +60,21 @@ $f3->route('GET /tree/history/@trid',
 );
 
 //Checkin to a tree ('mark')
-$f3->route('GET /tree/@trid/mark/@uid',
-    function() {
+$f3->route('GET /tree/@trid/mark',
+    function() 
+    {
+        session_start();
         global $db, $f3;
+        
+        //Validate user is logged on
+        $uid = validateuser($_SESSION['email'], $_SESSION['pwd']);
+        if($uid == 0)
+        {
+            echo "User not logged on";
+            return;
+        }
 
         $trid = $f3->get('PARAMS.trid');
-        $uid = $f3->get('PARAMS.uid');
         $sql = "INSERT INTO marks(uid, trid)
                 VALUES ($uid,$trid)";
 
@@ -99,6 +121,17 @@ $f3->route('GET /trees/bylocation/@latlonran',
 
         $rows=$db->exec($sql);
         echo json_encode($rows);
+
+    }
+);
+
+$f3->route('GET /user/logon/@email',
+    function()
+    {
+        session_start();
+        global $db, $f3;
+        $_SESSION['email'] = $f3->get('POST.email');
+        $_SESSION['pwd'] = $f3->get('POST.password');
 
     }
 );
