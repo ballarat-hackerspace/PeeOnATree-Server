@@ -12,7 +12,7 @@ function validateUser($email, $pwd)
     $rows=$db->exec('SELECT * FROM users WHERE email=?', $email);
     foreach($rows as $row)
     {
-        if $row['password'] == $pwd
+        if($row['password'] == $pwd)
         {
             return $row['id'];
         }
