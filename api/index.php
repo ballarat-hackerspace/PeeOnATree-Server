@@ -162,7 +162,7 @@ $f3->route('GET /trees/bylocation/@latlonran',
     }
 );
 
-$f3->route('GET /user/logon',
+$f3->route('POST /user/logon',
     function()
     {
         session_start();
