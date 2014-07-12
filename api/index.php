@@ -9,6 +9,7 @@ $db=new \DB\SQL('mysql:host=localhost;port=3306;dbname=peeonatree','root','passw
 
 function validateUser($email, $pwd)
 {
+    global $db;
     $rows=$db->exec('SELECT * FROM users WHERE email=?', $email);
     foreach($rows as $row)
     {
