@@ -1,5 +1,8 @@
 <?php
 
+$BASEURL = "http://54.79.38.93/";
+$CLIENTURL = $BASEUL."PeeOnATree-Client/web/";
+$APIURL = $BASEURL."PeeOnATree-Server/";
 
 $f3 = require('lib/base.php');
 //$f3 = include('lib/db/sql.php');
@@ -29,7 +32,10 @@ function validateUser($email, $pwd)
 
 function userLoginRedirect()
 {
-    echo "User not logged on";
+    global $CLIENTURL;
+    
+    $loginPage = $CLIENTURL."login.html";
+    header( "Location: $loginPage" )
 }
 
 $f3->route('GET /',
@@ -100,6 +106,32 @@ $f3->route('GET /tree/@trid/history',
 
 //Checkin to a tree ('mark')
 $f3->route('GET /tree/@trid/mark',
+    function() 
+    {
+        session_start();
+        global $db, $f3;
+        
+        //Validate user is logged on
+        if(!isset($_SESSION['email'])) { userLoginRedirect(); return; }
+        $uid = validateuser($_SESSION['email'], $_SESSION['pwd']);
+        if($uid == 0)
+        {
+            userLoginRedirect();
+            return;
+        }
+
+        $trid = $f3->get('PARAMS.trid');
+        $sql = "INSERT INTO marks(uid, trid)
+                VALUES ($uid,$trid)";
+
+        $rows=$db->exec($sql);
+        echo json_encode($rows);
+
+    }
+);
+
+//Upload a new pic
+$f3->route('POST /tree/@trid/uploadpic',
     function() 
     {
         session_start();
