@@ -209,7 +209,7 @@ $f3->route('POST /user/logon',
         session_start();
         global $db, $f3;
         $_SESSION['email'] = $f3->get('POST.email');
-        echo $f3->get('POST.email');
+        //echo $f3->get('POST.email');
         $_SESSION['pwd'] = $f3->get('POST.password');
         
         $uid = validateuser($_SESSION['email'], $_SESSION['pwd']);
