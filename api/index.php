@@ -11,6 +11,7 @@ function validateUser($email, $pwd)
 {
     global $db;
     $sql = "SELECT * FROM users WHERE email=$email";
+    echo $sql;
     $rows=$db->exec($sql);
     foreach($rows as $row)
     {
