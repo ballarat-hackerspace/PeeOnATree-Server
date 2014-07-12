@@ -217,5 +217,38 @@ $f3->route('GET /user/status',
     }
 );
 
+$f3->route('GET /user/profile',
+  function()
+  {
+    session_start();
+    global $db, $f3;
+
+    //Validate user is logged on
+    //        if(!isset($_SESSION['email'])) { userLoginRedirect(); return; }
+    //        $uid = validateuser($_SESSION['email'], $_SESSION['pwd']);
+    $uid = 1;
+    if($uid == 0)
+    {
+      return;
+    }
+    else
+    {
+      $sql = "Select email, team
+                From users
+                Where id = $uid";
+      $result = $db->exec($sql);
+      $user = $result[0];
+
+      $sql = "SELECT trid, datetime FROM marks WHERE uid = $uid";
+      $results = $db->exec($sql);
+
+      foreach ($results as $result) {
+        $user['marks'][] = $result;
+      }
+
+      echo json_encode($user);
+    }
+  }
+);
 
 $f3->run();
