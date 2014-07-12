@@ -179,9 +179,9 @@ $f3->route('POST /tree/@trid/uploadpic',
         
         
         
-        $sql = "UPDATE trees 
-                SET pic =  $files[0]
-                WHERE trid=$trid";
+        //$sql = "UPDATE trees 
+        //        SET pic =  $files[0]
+        //        WHERE trid=$trid";
 
         //$rows=$db->exec($sql);
         echo $files;
