@@ -4,7 +4,8 @@
 $f3 = require('lib/base.php');
 //$f3 = include('lib/db/sql.php');
 
-$db=new \DB\SQL('mysql:host=54.79.38.93;port=3306;dbname=peeonatree','root','passw0rd');
+//$db=new \DB\SQL('mysql:host=54.79.38.93;port=3306;dbname=peeonatree','root','passw0rd');
+$db=new \DB\SQL('mysql:host=localhost;port=3306;dbname=peeonatree','root','passw0rd');
 
 $f3->route('GET /',
     function() {
