@@ -238,6 +238,7 @@ $f3->route('GET /user/profile',
                 Where id = $uid";
       $result = $db->exec($sql);
       $user = $result[0];
+      $user['gravatar'] = md5($user['email']);
 
       $sql = "SELECT trid, datetime FROM marks WHERE uid = $uid";
       $results = $db->exec($sql);
