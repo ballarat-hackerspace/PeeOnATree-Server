@@ -3,7 +3,7 @@
  * @file
  */
 
-include('krumo/class.krumo.php');
+//include('krumo/class.krumo.php');
 
 include('backpress/includes/class.bpdb.php');
 include('backpress/includes/functions.core.php');
