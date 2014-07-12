@@ -9,15 +9,21 @@ $db=new \DB\SQL('mysql:host=localhost;port=3306;dbname=peeonatree','root','passw
 
 function validateUser($email, $pwd)
 {
-    $rows=$db->exec('SELECT * FROM users WHERE email=?', $email);
-    if $rows[0]['password'] == $pwd
+    //$rows=$db->exec('SELECT * FROM users WHERE email=?', $email);
+    //if $rows[0]['password'] == $pwd
     {
-        return $rows[0]['id'];
+    //    return $rows[0]['id'];
     }
-    else
+    //else
     {
-        return 0;
+    //    return 0;
     }
+    
+}
+
+function userLoginRedirect()
+{
+    echo "User not logged on";
 }
 
 $f3->route('GET /',
@@ -67,10 +73,11 @@ $f3->route('GET /tree/@trid/mark',
         global $db, $f3;
         
         //Validate user is logged on
+        if(!isset($_SESSION['email'])) { userLoginRedirect(); return; }
         $uid = validateuser($_SESSION['email'], $_SESSION['pwd']);
         if($uid == 0)
         {
-            echo "User not logged on";
+            userLoginRedirect();
             return;
         }
 
