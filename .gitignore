@@ -1,0 +1,6 @@
+# Project files
+.idea
+.svn
+
+# Miscellaneous files
+.DS_Store
