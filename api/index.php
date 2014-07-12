@@ -51,8 +51,10 @@ $f3->route('GET /tree/@trid/mark/@uid',
     function() {
         global $db, $f3;
 
-        $sql = ("INSERT INTO marks(uid, trid)
-                VALUES (?,?)", $f3->get('PARAMS.trid'), $f3->get('PARAMS.uid'));
+        $trid = $f3->get('PARAMS.trid');
+        $uid = $f3->get('PARAMS.uid');
+        $sql = "INSERT INTO marks(uid, trid)
+                VALUES ($uid,$trid)";
 
         $rows=$db->exec($sql);
         echo json_encode($rows);
