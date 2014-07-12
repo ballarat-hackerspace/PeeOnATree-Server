@@ -325,7 +325,7 @@ $f3->route('GET /user/profile',
       // Total marks by this user
       $user['user_marks'] = $db->exec("SELECT total FROM user_totals WHERE uid = $uid")[0]['total'];
       // Total marks by this user's team
-      $user['team_marks'] = $db->exec("SELECT total FROM team_totals WHERE team = {$user['team']}")[0]['total'];
+      $user['team_marks'] = $db->exec("SELECT total FROM team_totals WHERE team = \"{$user['team']}\"")[0]['total'];
 
       echo json_encode($user);
     }
