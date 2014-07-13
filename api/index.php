@@ -395,7 +395,7 @@ $f3->route('GET /user/profile',
     }
     else
     {
-      $sql = "Select email, team
+      $sql = "Select email, team, fName, lName
                 From users
                 Where id = $uid";
       $result = $db->exec($sql);
@@ -414,6 +414,29 @@ $f3->route('GET /user/profile',
       $user['user_marks'] = $db->exec("SELECT total FROM user_totals WHERE uid = $uid")[0]['total'];
       // Total marks by this user's team
       $user['team_marks'] = $db->exec("SELECT total FROM team_totals WHERE team = \"{$user['team']}\"")[0]['total'];
+
+      echo json_encode($user);
+    }
+  }
+);
+
+$f3->route('GET /user/@uid/profile',
+  function()
+  {
+    session_start();
+    global $db, $f3;
+
+    $uid = $f3->get('PARAMS.uid');
+    if($uid == 0)
+    {
+      return;
+    }
+    else
+    {
+      $sql = "SELECT email, team, fName, sName FROM users WHERE id = $uid";
+      $result = $db->exec($sql);
+      $user = $result[0];
+      $user['gravatar'] = md5($user['email']);
 
       echo json_encode($user);
     }
